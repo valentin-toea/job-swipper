@@ -42,31 +42,46 @@ const ExploreContainer: React.FC = () => {
   return (
     <div className="explore-container">
       {cards.length > 0 && (
-        <Swipeable onSwipe={handleOnSwipe}>
-          <Card info={cards[0]} />
-        </Swipeable>
+        <>
+          <Swipeable onSwipe={handleOnSwipe}>
+            <Card info={cards[0]} />
+          </Swipeable>
+
+          <div className="explore-button-group">
+            <IonButton
+              color="light"
+              shape="round"
+              size="large"
+              onClick={() => handleOnSwipe(direction.LEFT)}
+            >
+              <IonIcon
+                slot="icon-only"
+                icon={close}
+                style={{ color: "#e53935" }}
+              />
+            </IonButton>
+            <IonButton color="light" shape="round">
+              <IonIcon
+                slot="icon-only"
+                icon={star}
+                style={{ color: "#6dd5ed" }}
+              />
+            </IonButton>
+            <IonButton
+              color="light"
+              shape="round"
+              size="large"
+              onClick={() => handleOnSwipe(direction.RIGHT)}
+            >
+              <IonIcon
+                slot="icon-only"
+                icon={heart}
+                style={{ color: "#93F9B9" }}
+              />
+            </IonButton>
+          </div>
+        </>
       )}
-      <div className="explore-button-group">
-        <IonButton
-          color="light"
-          shape="round"
-          size="large"
-          onClick={() => handleOnSwipe(direction.LEFT)}
-        >
-          <IonIcon slot="icon-only" icon={close} style={{ color: "#e53935" }} />
-        </IonButton>
-        <IonButton color="light" shape="round">
-          <IonIcon slot="icon-only" icon={star} style={{ color: "#6dd5ed" }} />
-        </IonButton>
-        <IonButton
-          color="light"
-          shape="round"
-          size="large"
-          onClick={() => handleOnSwipe(direction.RIGHT)}
-        >
-          <IonIcon slot="icon-only" icon={heart} style={{ color: "#93F9B9" }} />
-        </IonButton>
-      </div>
     </div>
   );
 };
