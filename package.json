@@ -21,6 +21,7 @@
     "@types/react-router-dom": "^5.1.7",
     "ionicons": "^5.4.0",
     "react": "^17.0.1",
+    "react-deck-swiper": "^1.0.9",
     "react-dom": "^17.0.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

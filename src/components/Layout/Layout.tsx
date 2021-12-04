@@ -4,19 +4,9 @@ import {
   IonTabBar,
   IonTabButton,
   IonIcon,
-  IonLabel,
-  IonBadge,
   IonPage,
-  IonRouterOutlet,
 } from "@ionic/react";
-import {
-  calendar,
-  personCircle,
-  map,
-  informationCircle,
-  flameOutline,
-  chatbubbleOutline,
-} from "ionicons/icons";
+import { personCircle, flame, chatbubble } from "ionicons/icons";
 import { Redirect, Route, Switch } from "react-router-dom";
 import "./Layout.css";
 
@@ -30,16 +20,16 @@ const Layout: React.FC = ({ children }) => (
       <Redirect from="/tabs" to="/tabs/home" />
     </Switch>
     <IonTabBar slot="top">
-      <IonTabButton tab="profile" href={"/"} className="first-tab">
+      <IonTabButton tab="profile" className="first-tab">
         <IonIcon icon={personCircle} />
       </IonTabButton>
 
-      <IonTabButton tab="finder">
-        <IonIcon icon={flameOutline} />
+      <IonTabButton tab="finder" href={"/"}>
+        <IonIcon icon={flame} />
       </IonTabButton>
 
       <IonTabButton tab="chat" className="last-tab">
-        <IonIcon icon={chatbubbleOutline} />
+        <IonIcon icon={chatbubble} />
       </IonTabButton>
     </IonTabBar>
     {children}
