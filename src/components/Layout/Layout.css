@@ -1,0 +1,12 @@
+ion-tab-bar {
+  padding: 10px -0;
+  --border: none;
+}
+
+.first-tab {
+  --padding-end: 50%;
+}
+
+.last-tab {
+  --padding-start: 50%;
+}

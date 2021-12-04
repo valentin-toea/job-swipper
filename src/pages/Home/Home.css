@@ -1,0 +1,8 @@
+ion-content ion-header ion-toolbar {
+  --border-width: none;
+  --border: none;
+}
+
+.header-ios ion-toolbar:last-of-type {
+    --border-width: 0;
+}
