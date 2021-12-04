@@ -1,15 +1,11 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
+import ExploreContainer from '../../components/ExploreContainer/ExploreContainer';
+import Layout from '../../components/Layout/Layout';
 import './Home.css';
 
 const Home: React.FC = () => {
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Blank</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+    <Layout>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
@@ -18,7 +14,7 @@ const Home: React.FC = () => {
         </IonHeader>
         <ExploreContainer />
       </IonContent>
-    </IonPage>
+    </Layout>
   );
 };
 
