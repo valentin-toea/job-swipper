@@ -11,7 +11,7 @@ import {
   IonIcon,
 } from "@ionic/react";
 
-import {schoolOutline, businessOutline} from 'ionicons/icons';
+import { schoolOutline, businessOutline } from "ionicons/icons";
 import "./CardModal.css";
 
 const ModalBody: React.FC<{
@@ -26,7 +26,7 @@ const ModalBody: React.FC<{
   const eduFields: string[][] = Object.entries(education);
 
   return (
-    <IonCard>
+    <IonCard className="modal-card-wrapper">
       <IonCardHeader>
         <IonCardTitle>
           {name} {surname}
@@ -38,7 +38,7 @@ const ModalBody: React.FC<{
           <IonListHeader> Experience </IonListHeader>
           {expFields.map((obj: string[]) => (
             <IonItem>
-                <IonIcon icon={businessOutline} slot="start"/>
+              <IonIcon icon={businessOutline} slot="start" />
               <IonLabel className="ion-text-wrap">
                 {obj[0]} - {obj[1]}
               </IonLabel>
@@ -52,7 +52,7 @@ const ModalBody: React.FC<{
 
           {eduFields.map((obj: string[]) => (
             <IonItem>
-                <IonIcon icon={schoolOutline} slot="start" />
+              <IonIcon icon={schoolOutline} slot="start" />
               <IonLabel className="ion-text-wrap">
                 {obj[0]} - {obj[1]}
               </IonLabel>

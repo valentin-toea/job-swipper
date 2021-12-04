@@ -2,14 +2,38 @@ import "./ExploreContainer.css";
 import React from "react";
 import { Swipeable, direction } from "react-deck-swiper";
 import Card from "../Card/Card";
-import { IonButton, IonIcon, useIonToast } from "@ionic/react";
+import { IonButton, IonIcon, useIonModal, useIonToast } from "@ionic/react";
 import { star, close, heart } from "ionicons/icons";
+import ModalBody from "../CardModal/CardModal";
 
 const ExploreContainer: React.FC = () => {
   const [lastSwipeDirection, setLastSwipeDirection] = React.useState("");
   const [cards, setCards] = React.useState([0, 1, 2, 3, 4, 5, 6]);
 
   const [present, dismiss] = useIonToast();
+
+  const handleModalDismiss = () => {
+    modalDismiss();
+  }
+  const name = "Ion";
+  const surname = "Vasilache";
+  const title = "Frontend Developer";
+  const experience = {
+    'UPB' : 'student',
+    'Google.com' : 'CEO for 3 years'
+  };
+  const education = {
+    'CNTV' : 'smecher 2012-2019',
+    'UPB' : 'mai putin smecher, 2020 - azi si inca 5 ani ma asteapta'
+  };
+  const [modalPresent, modalDismiss] = useIonModal(ModalBody,{
+    name,
+    surname,
+    title,
+    experience,
+    education,
+    onDismiss: handleModalDismiss,
+  })
 
   const handleOnSwipe = (swipeDirection: any) => {
     if (swipeDirection === direction.RIGHT) {
@@ -43,8 +67,11 @@ const ExploreContainer: React.FC = () => {
     <div className="explore-container">
       {cards.length > 0 && (
         <>
-          <Swipeable onSwipe={handleOnSwipe}>
-            <Card info={cards[0]} />
+          <Swipeable onSwipe={handleOnSwipe} >
+            <Card info={cards[0]} onClick={() => {
+              modalPresent({})
+            }}/>
+
           </Swipeable>
 
           <div className="explore-button-group">

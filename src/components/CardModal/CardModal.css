@@ -1,3 +1,13 @@
+.modal-card-wrapper{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+}
+
 .modal-list{
     padding-bottom: 15px;
+}
+.modal-list:last-of-type{
+    flex: 1;
 }
