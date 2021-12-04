@@ -12,7 +12,7 @@ import {
 } from "@ionic/react";
 
 import { schoolOutline, businessOutline } from "ionicons/icons";
-import "./CardModal.css";
+import "./RecruitCardModal.css";
 
 const ModalBody: React.FC<{
   name: string;
