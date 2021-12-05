@@ -36,8 +36,8 @@ const ModalBody: React.FC<{
       {expFields.length !== 0 && (
         <IonList className="modal-list">
           <IonListHeader> Experience </IonListHeader>
-          {expFields.map((obj: string[]) => (
-            <IonItem>
+          {expFields.map((obj: string[], index: number) => (
+            <IonItem key={index}>
               <IonIcon icon={businessOutline} slot="start" />
               <IonLabel className="ion-text-wrap">
                 {obj[0]} - {obj[1]}
@@ -50,8 +50,8 @@ const ModalBody: React.FC<{
         <IonList className="modal-list">
           <IonListHeader> Education </IonListHeader>
 
-          {eduFields.map((obj: string[]) => (
-            <IonItem>
+          {eduFields.map((obj: string[], index: number) => (
+            <IonItem key={index}>
               <IonIcon icon={schoolOutline} slot="start" />
               <IonLabel className="ion-text-wrap">
                 {obj[0]} - {obj[1]}

@@ -1,5 +1,4 @@
 .cardContainer {
-  margin-top: 20px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -10,13 +9,18 @@
   background-color: #fff;
   width: 92vw;
   height: 520px;
-  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
   background-size: cover;
   background-position: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .swipe {
   display: flex;
   justify-content: center;
+}
+
+.card-img {
+  flex: 1;
+  max-height: 340px;
 }

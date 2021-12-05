@@ -39,7 +39,7 @@ const JobModalBody: React.FC<{
       case "Meta":
         setImage("https://i.ibb.co/GFq4dRx/meta.jpg");
     }
-  },[]);
+  }, []);
 
   return (
     <IonCard className="modal-card-wrapper">
@@ -54,8 +54,8 @@ const JobModalBody: React.FC<{
       {reqFields.length !== 0 && (
         <IonList className="modal-list">
           <IonListHeader> Requirements </IonListHeader>
-          {reqFields.map((obj: string[]) => (
-            <IonItem>
+          {reqFields.map((obj: string[], index: number) => (
+            <IonItem key={index}>
               <IonIcon icon={checkmarkCircleOutline} slot="start" />
               <IonLabel className="ion-text-wrap">
                 {obj[0]} - {obj[1]}
