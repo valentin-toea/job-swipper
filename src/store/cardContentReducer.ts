@@ -13,6 +13,21 @@ export const getPeopleList = createAsyncThunk<any, any, any>(
   }
 );
 
+export const swipeCard = createAsyncThunk<any, any, any>(
+  "cardContent/swipeCard",
+  async ({ currentId, swipedId, jobId, direction }) => {
+    let ENDPOINT = "swipe";
+
+    const response = await axios.post(MAIN_URL + ENDPOINT, {
+      swiper: currentId,
+      swiped_on: swipedId,
+      job_id: jobId,
+      swipe_result: direction,
+    });
+    return response.data;
+  }
+);
+
 export const cardContentSlice = createSlice({
   name: "cardContent",
   // 1- persoana, 2 - recruiter
@@ -30,6 +45,10 @@ export const cardContentSlice = createSlice({
     builder.addCase(getPeopleList.fulfilled, (state, action) => {
       state.peopleList = action.payload;
       state.loading = false;
+    });
+
+    builder.addCase(swipeCard.fulfilled, (state, action) => {
+      console.log(action.payload);
     });
 
     builder.addCase(getPeopleList.pending, (state, action) => {

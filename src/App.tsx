@@ -26,6 +26,8 @@ import React from "react";
 import { getPictures } from "./store/picturesReducer";
 import { getPeopleList } from "./store/cardContentReducer";
 import Profile from "./pages/Profile/Profile";
+import { getJobsForRecruiter, getMatches } from "./store/userReducer";
+import Messages from "./pages/Messages/Messages";
 
 interface StoreState {
   user: { loggedIn: boolean };
@@ -35,10 +37,15 @@ interface StoreState2 {
   user: { userType: number };
 }
 
+interface StoreState3 {
+  user: { userData: any };
+}
+
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector((state: StoreState) => state.user.loggedIn);
   const userType = useSelector((state: StoreState2) => state.user.userType);
+  const userData = useSelector((state: StoreState3) => state.user.userData);
 
   React.useEffect(() => {
     dispatch(getPictures({}));
@@ -46,6 +53,16 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     userType === 2 && dispatch(getPeopleList({}));
+    userType === 2 && dispatch(getJobsForRecruiter({ userId: userData.id }));
+
+    let interv: ReturnType<typeof setInterval>;
+    if (loggedIn) {
+      interv = setInterval(() => {
+        dispatch(getMatches({ userId: userData.id }));
+      }, 10000);
+    }
+
+    return () => interv && clearInterval(interv);
   }, [loggedIn]);
 
   return (
@@ -68,6 +85,11 @@ const App: React.FC = () => {
             exact
             path="/profile"
             render={() => (loggedIn ? <Profile /> : <Redirect to="/login" />)}
+          />
+          <Route
+            exact
+            path="/matches"
+            render={() => (loggedIn ? <Messages /> : <Redirect to="/login" />)}
           />
         </IonRouterOutlet>
       </IonReactRouter>

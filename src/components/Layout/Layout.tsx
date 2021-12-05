@@ -5,6 +5,7 @@ import {
   IonTabButton,
   IonIcon,
   IonPage,
+  IonBadge,
 } from "@ionic/react";
 import { personCircle, flame, chatbubble } from "ionicons/icons";
 import "./Layout.css";
@@ -20,8 +21,9 @@ const Layout: React.FC = ({ children }) => (
         <IonIcon icon={flame} />
       </IonTabButton>
 
-      <IonTabButton tab="chat" className="last-tab">
+      <IonTabButton tab="matches" className="last-tab" href={"/matches"}>
         <IonIcon icon={chatbubble} />
+        <IonBadge>6</IonBadge>
       </IonTabButton>
     </IonTabBar>
     {children}

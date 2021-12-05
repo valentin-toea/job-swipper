@@ -12,8 +12,8 @@ import {
   IonText,
 } from "@ionic/react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateFilterString } from "../../store/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { setRecruiterJob, updateFilterString } from "../../store/userReducer";
 import "./ProfileContainer.css";
 
 const ProfileContainer: React.FC = () => {
@@ -55,14 +55,21 @@ const ProfileContainer: React.FC = () => {
     "DevOps Engineer",
     "Software Engineer",
     "ServiceNow Developer",
-    "C++ Developer"
+    "C++ Developer",
   ];
-  const [type, setType] = useState(1);
+  const [type, setType] = useState(2);
   const [searchedSkills, setSearchedSkills] = useState([]);
   const [searchedJobs, setSearchedJobs] = useState([]);
   const dispatch = useDispatch();
   const skillFields: string[][] = Object.entries(fetchedSkills);
   const jobsFields: string[][] = Object.entries(fetchedJobs);
+
+  const jobsList = useSelector(
+    (state: { user: { jobs: [] } }) => state.user.jobs
+  );
+  const selectJobForRecruiter = useSelector(
+    (state: { user: { recruiterJob: number } }) => state.user.recruiterJob
+  );
 
   return (
     <div>
@@ -83,8 +90,8 @@ const ProfileContainer: React.FC = () => {
 
           <IonCardContent className="card-content">
             {skillFields.length !== 0 &&
-              skillFields.map((obj: string[], index) => (
-                <div className="skill-field">
+              skillFields.map((obj: string[], index: number) => (
+                <div className="skill-field" key={index}>
                   <IonText>{obj[0]}</IonText>
                   <IonBadge color="secondary">{obj[1]}</IonBadge>
                 </div>
@@ -99,8 +106,8 @@ const ProfileContainer: React.FC = () => {
                 placeholder="Pick at least one job.."
                 multiple={true}
                 onIonChange={(e) => {
-                    setSearchedJobs(e.detail.value);
-                    dispatch(updateFilterString(e.detail.value));
+                  setSearchedJobs(e.detail.value);
+                  dispatch(updateFilterString(e.detail.value));
                 }}
               >
                 {jobs.map((obj: string) => (
@@ -122,13 +129,30 @@ const ProfileContainer: React.FC = () => {
           </IonLabel>
           <IonCardContent className="card-content">
             {jobsFields.length !== 0 &&
-              jobsFields.map((obj: string[]) => (
-                <div className="skill-field">
+              jobsFields.map((obj: string[], index: number) => (
+                <div className="skill-field" key={index}>
                   <IonText>{obj[0]}</IonText>
                   <IonBadge>{obj[1]}</IonBadge>
                 </div>
               ))}
             <div className="card-content">
+              <IonLabel className="filter-field"> Select Job: </IonLabel>
+              <IonSelect
+                value={selectJobForRecruiter}
+                okText="Save"
+                cancelText="Dismiss"
+                placeholder="Pick a job for hiring"
+                onIonChange={(e) => {
+                  dispatch(setRecruiterJob(e.detail.value));
+                }}
+              >
+                {jobsList.map((obj: any) => (
+                  <IonSelectOption value={obj.id} key={obj.id}>
+                    {" "}
+                    {obj.name}{" "}
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
               <IonLabel className="filter-field"> Looking for: </IonLabel>
               <IonSelect
                 value={searchedSkills}
@@ -137,12 +161,15 @@ const ProfileContainer: React.FC = () => {
                 placeholder="Pick at least one skill.."
                 multiple={true}
                 onIonChange={(e) => {
-                    setSearchedSkills(e.detail.value);
-                    dispatch(updateFilterString(e.detail.value));
+                  setSearchedSkills(e.detail.value);
+                  dispatch(updateFilterString(e.detail.value));
                 }}
               >
-                {skills.map((obj: string) => (
-                  <IonSelectOption value={obj}> {obj} </IonSelectOption>
+                {skills.map((obj: string, index: number) => (
+                  <IonSelectOption value={obj} key={index}>
+                    {" "}
+                    {obj}{" "}
+                  </IonSelectOption>
                 ))}
               </IonSelect>
             </div>

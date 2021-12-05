@@ -14,7 +14,10 @@ import ModalBody from "../RecruitCardModal/RecruitCardModal";
 import JobModalBody from "../JobCardModal/JobCardModal";
 import CardWithJob from "../CardWithJob/CardWithJob";
 import { useSelector, useDispatch } from "react-redux";
-import { removeOnePersonFromList } from "../../store/cardContentReducer";
+import {
+  removeOnePersonFromList,
+  swipeCard,
+} from "../../store/cardContentReducer";
 
 const name = "Ion";
 const surname = "Vasilache";
@@ -44,7 +47,8 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
     (state: { pictures: { list: [] } }) => state.pictures.list
   );
   const peopleList = useSelector(
-    (state: { cardContent: { peopleList: Array<Object> } }) => state.cardContent.peopleList
+    (state: { cardContent: { peopleList: Array<any> } }) =>
+      state.cardContent.peopleList
   );
 
   const [lastSwipeDirection, setLastSwipeDirection] = React.useState("");
@@ -80,6 +84,13 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
   });
 
   console.log(peopleList);
+  const userData = useSelector(
+    (state: { user: { userData: any } }) => state.user.userData
+  );
+
+  const selectJobForRecruiter = useSelector(
+    (state: { user: { recruiterJob: number } }) => state.user.recruiterJob
+  );
 
   const handleOnSwipe = (swipeDirection: any) => {
     setPictureIndex(Math.floor(Math.random() * 50));
@@ -87,14 +98,33 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
     if (swipeDirection === direction.RIGHT) {
       setLastSwipeDirection("your right");
       present(swipeRight);
+      if (isRecruiter) {
+        dispatch(
+          swipeCard({
+            currentId: userData.id,
+            swipedId: peopleList[0]["user_id"],
+            jobId: selectJobForRecruiter,
+            direction: 1,
+          })
+        );
+      }
     }
 
     if (swipeDirection === direction.LEFT) {
       setLastSwipeDirection("your left");
       present(swipeLeft);
+      if (isRecruiter) {
+        dispatch(
+          swipeCard({
+            currentId: userData.id,
+            swipedId: peopleList[0]["user_id"],
+            jobId: selectJobForRecruiter,
+            direction: 0,
+          })
+        );
+      }
     }
 
-    //setCards((prev) => prev.slice(1));
     dispatch(removeOnePersonFromList({}));
   };
 
