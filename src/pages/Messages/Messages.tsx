@@ -19,6 +19,8 @@ import {
   useIonModal,
   IonSkeletonText,
 } from "@ionic/react";
+import ModalBody from "../../components/RecruitCardModal/RecruitCardModal";
+import JobModalBody from "../../components/JobCardModal/JobCardModal";
 
 const Body: React.FC<{
   count: number;
@@ -44,7 +46,14 @@ const Body: React.FC<{
     </div>
 
     <div className="ion-padding custom-skeleton">
-      <div style={{ display: "flex",flexDirection:'column', alignItems: "end", width: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "end",
+          width: "100%",
+        }}
+      >
         <IonSkeletonText animated style={{ width: "80px", height: "60px" }} />
         <IonSkeletonText animated />
         <IonSkeletonText animated style={{ width: "88%" }} />
@@ -81,6 +90,19 @@ const Messages = () => {
     onDismiss: () => dismiss(),
   });
 
+  const [job, setJob] = React.useState();
+  const [person, setPerson] = React.useState();
+
+  const [jobModalPresent, jobModalDismiss] = useIonModal(JobModalBody, {
+    job,
+    onDismiss: () => jobModalDismiss(),
+  });
+
+  const [modalPresent, modalDismiss] = useIonModal(ModalBody, {
+    person,
+    onDismiss: () => modalDismiss(),
+  });
+
   return (
     <Layout>
       <IonContent fullscreen>
@@ -114,12 +136,23 @@ const Messages = () => {
                   </div>
                 </IonItem>
                 <IonItemOptions side="end">
-                  <IonItemOption onClick={() => {}} color="danger">
+                  <IonItemOption
+                    onClick={() => {
+                      setPerson(msg[0]);
+                      modalPresent();
+                    }}
+                    color="danger"
+                  >
                     Profile
                   </IonItemOption>
                 </IonItemOptions>
                 <IonItemOptions side="start">
-                  <IonItemOption onClick={() => {}}>
+                  <IonItemOption
+                    onClick={() => {
+                      setJob(msg[1]);
+                      jobModalPresent();
+                    }}
+                  >
                     Job Description
                   </IonItemOption>
                 </IonItemOptions>

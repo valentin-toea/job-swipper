@@ -29,7 +29,7 @@ const Card: React.FC<Props> = ({ info, picture, onClick }) => {
             <IonCardTitle>{info.name + ", " + info.surname}</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            Skills in C# , C++
+            {info.skills}
             <br />
             <b>*Press to see more</b>
           </IonCardContent>

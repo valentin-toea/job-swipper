@@ -3,18 +3,25 @@ import React, { useState } from "react";
 import { Swipeable, direction } from "react-deck-swiper";
 import Card from "../Card/Card";
 import {
+  IonBadge,
   IonButton,
   IonIcon,
   useIonLoading,
   useIonModal,
   useIonToast,
 } from "@ionic/react";
-import { star, close, heart } from "ionicons/icons";
+import { star, close, heart, refresh } from "ionicons/icons";
 import ModalBody from "../RecruitCardModal/RecruitCardModal";
 import JobModalBody from "../JobCardModal/JobCardModal";
 import CardWithJob from "../CardWithJob/CardWithJob";
 import { useSelector, useDispatch } from "react-redux";
-import { removeOneJobFromList, removeOnePersonFromList, swipeCard } from "../../store/cardContentReducer";
+import {
+  getJobsList,
+  getPeopleList,
+  removeOneJobFromList,
+  removeOnePersonFromList,
+  swipeCard,
+} from "../../store/cardContentReducer";
 
 const company_name = "Meta";
 const job_title = "Frontend Developer";
@@ -80,7 +87,8 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
 
     if (swipeDirection === direction.RIGHT) {
       setLastSwipeDirection("your right");
-      present(swipeRight);
+
+      present(swipeRight(() => dismiss()));
       if (isRecruiter) {
         dispatch(
           swipeCard({
@@ -95,7 +103,7 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
 
     if (swipeDirection === direction.LEFT) {
       setLastSwipeDirection("your left");
-      present(swipeLeft);
+      present(swipeLeft(() => dismiss()));
       if (isRecruiter) {
         dispatch(
           swipeCard({
@@ -111,16 +119,14 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
     //setCards((prev) => prev.slice(1));
     if (isRecruiter) {
       dispatch(removeOnePersonFromList({}));
-
     } else {
       dispatch(removeOneJobFromList({}));
-
     }
   };
 
   return (
     <div className="explore-container">
-      {(
+      {
         <>
           <Swipeable onSwipe={handleOnSwipe}>
             {isRecruiter ? (
@@ -152,12 +158,22 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
                 style={{ color: "#e53935" }}
               />
             </IonButton>
-            <IonButton color="light" shape="round">
+            <IonButton
+              color="light"
+              shape="round"
+              onClick={() => {
+                isRecruiter && dispatch(getPeopleList({}));
+                !isRecruiter && dispatch(getJobsList({}));
+              }}
+            >
               <IonIcon
                 slot="icon-only"
-                icon={star}
+                icon={refresh}
                 style={{ color: "#6dd5ed" }}
               />
+              <IonBadge color="primary">
+                {isRecruiter ? peopleList.length : jobList.length}
+              </IonBadge>
             </IonButton>
             <IonButton
               color="light"
@@ -173,27 +189,25 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
             </IonButton>
           </div>
         </>
-      )}
+      }
     </div>
   );
 };
 
 export default ExploreContainer;
 
-const swipeRight = {
+const swipeRight = (magicFunc: () => void) => ({
   buttons: [{ text: "UNDO", handler: () => {} }],
   color: "success",
-  duration: 3000,
-  message: "Accepted this job offer",
-  onDidDismiss: () => console.log("dismissed"),
-  onWillDismiss: () => console.log("will dismiss"),
-};
+  duration: 2000,
+  message: "Requested a chat",
+  ionToastWillPresent: magicFunc,
+});
 
-const swipeLeft = {
+const swipeLeft = (magicFunc: () => void) => ({
   buttons: [{ text: "UNDO", handler: () => {} }],
   color: "danger",
-  message: "Refused this job offer",
-  duration: 3000,
-  onDidDismiss: () => console.log("dismissed"),
-  onWillDismiss: () => console.log("will dismiss"),
-};
+  message: "Ignored this offer",
+  duration: 2000,
+  ionToastWillPresent: magicFunc,
+});
