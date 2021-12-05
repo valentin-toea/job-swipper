@@ -25,7 +25,6 @@ const Login = () => {
 
   const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const [userType, setUserType] = useState<string | any>("1");
 
   return (
     <IonPage>
@@ -61,19 +60,6 @@ const Login = () => {
                 onIonChange={(e) => setPassword(e.detail.value!)}
               ></IonInput>
             </IonItem>
-            <div style={{ padding: "30px 60px" }}>
-              <IonSegment
-                value={userType}
-                onIonChange={(e) => setUserType(e.detail.value)}
-              >
-                <IonSegmentButton value="1">
-                  <IonLabel>Person</IonLabel>
-                </IonSegmentButton>
-                <IonSegmentButton value="2">
-                  <IonLabel>Company</IonLabel>
-                </IonSegmentButton>
-              </IonSegment>
-            </div>
           </IonList>
           <IonButton
             color="primary"
