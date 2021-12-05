@@ -11,14 +11,42 @@ import {
   IonSelectOption,
   IonText,
 } from "@ionic/react";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import axios from "axios";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { updateFilterString } from "../../store/userReducer";
+import { MAIN_URL } from "../../utils/url";
 import "./ProfileContainer.css";
+interface StoreState {
+  user: {
+    userData: { id: number; username: string; password: string };
+    userType: number;
+  };
+}
+interface CurrentUser {
+  id: number;
+  username: string;
+  password: string;
+}
+interface User {
+  name: string;
+  surname: string;
+}
 
 const ProfileContainer: React.FC = () => {
-  const name = "Ion";
-  const surname = "Vasilache";
+  const user: CurrentUser = useSelector(
+    (state: StoreState) => state.user.userData
+  );
+  const type = useSelector((state: StoreState) => state.user.userType);
+  const [userData, setUserData] = useState<User>({ name: "", surname: "" });
+
+  React.useEffect(() => {
+    let ENDPOINT = "current_user";
+    axios
+      .post(MAIN_URL + ENDPOINT, { user_id: user.id, type: type })
+      .then((res) => setUserData(res.data));
+  }, []);
+
   const title = "Frontend Developer";
   const fetchedSkills = {
     "C++": "advanced",
@@ -26,7 +54,6 @@ const ProfileContainer: React.FC = () => {
     JavaScript: "advanced",
     OOP: "beginner",
   };
-  const company_name = "Google";
   const fetchedJobs = {
     "Frontend Developer": "Open",
     "Backend Developer": "Closed",
@@ -55,9 +82,8 @@ const ProfileContainer: React.FC = () => {
     "DevOps Engineer",
     "Software Engineer",
     "ServiceNow Developer",
-    "C++ Developer"
+    "C++ Developer",
   ];
-  const [type, setType] = useState(1);
   const [searchedSkills, setSearchedSkills] = useState([]);
   const [searchedJobs, setSearchedJobs] = useState([]);
   const dispatch = useDispatch();
@@ -76,7 +102,7 @@ const ProfileContainer: React.FC = () => {
 
           <IonLabel className="header-wrapper">
             <IonCardTitle>
-              {name} {surname}
+              {userData.name} {userData.surname}
             </IonCardTitle>
             <IonCardSubtitle>{title}</IonCardSubtitle>
           </IonLabel>
@@ -99,8 +125,8 @@ const ProfileContainer: React.FC = () => {
                 placeholder="Pick at least one job.."
                 multiple={true}
                 onIonChange={(e) => {
-                    setSearchedJobs(e.detail.value);
-                    dispatch(updateFilterString(e.detail.value));
+                  setSearchedJobs(e.detail.value);
+                  dispatch(updateFilterString(e.detail.value));
                 }}
               >
                 {jobs.map((obj: string) => (
@@ -118,7 +144,9 @@ const ProfileContainer: React.FC = () => {
             </IonAvatar>
           </div>
           <IonLabel className="header-wrapper">
-            <IonCardTitle>{company_name}</IonCardTitle>
+            <IonCardTitle>
+              {userData.name} {userData.surname}
+            </IonCardTitle>
           </IonLabel>
           <IonCardContent className="card-content">
             {jobsFields.length !== 0 &&
@@ -137,8 +165,8 @@ const ProfileContainer: React.FC = () => {
                 placeholder="Pick at least one skill.."
                 multiple={true}
                 onIonChange={(e) => {
-                    setSearchedSkills(e.detail.value);
-                    dispatch(updateFilterString(e.detail.value));
+                  setSearchedSkills(e.detail.value);
+                  dispatch(updateFilterString(e.detail.value));
                 }}
               >
                 {skills.map((obj: string) => (
