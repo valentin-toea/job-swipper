@@ -29,7 +29,7 @@ interface StoreState {
 
 const App: React.FC = () => {
   const loggedIn = useSelector((state: StoreState) => state.user.loggedIn);
-  console.log(loggedIn);
+
   return (
     <IonApp>
       <IonReactRouter>
