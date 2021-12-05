@@ -1,5 +1,5 @@
 import "./ExploreContainer.css";
-import React from "react";
+import React, { useState } from "react";
 import { Swipeable, direction } from "react-deck-swiper";
 import Card from "../Card/Card";
 import {
@@ -14,22 +14,8 @@ import ModalBody from "../RecruitCardModal/RecruitCardModal";
 import JobModalBody from "../JobCardModal/JobCardModal";
 import CardWithJob from "../CardWithJob/CardWithJob";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  removeOnePersonFromList,
-  swipeCard,
-} from "../../store/cardContentReducer";
+import { removeOneJobFromList, removeOnePersonFromList, swipeCard } from "../../store/cardContentReducer";
 
-const name = "Ion";
-const surname = "Vasilache";
-const title = "Frontend Developer";
-const experience = {
-  UPB: "student",
-  "Google.com": "CEO for 3 years",
-};
-const education = {
-  CNTV: "smecher 2012-2019",
-  UPB: "mai putin smecher, 2020 - azi si inca 5 ani ma asteapta",
-};
 const company_name = "Meta";
 const job_title = "Frontend Developer";
 const description =
@@ -50,6 +36,10 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
     (state: { cardContent: { peopleList: Array<any> } }) =>
       state.cardContent.peopleList
   );
+  const jobList = useSelector(
+    (state: { cardContent: { jobList: Array<Object> } }) =>
+      state.cardContent.jobList
+  );
 
   const [lastSwipeDirection, setLastSwipeDirection] = React.useState("");
   const [cards, setCards] = React.useState([0, 1, 2, 3, 4, 5, 6]);
@@ -67,19 +57,12 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
   };
 
   const [jobModalPresent, jobModalDismiss] = useIonModal(JobModalBody, {
-    company_name,
-    job_title,
-    description,
-    requirements,
+    job: jobList[0],
     onDismiss: handleJobModalDismiss,
   });
 
   const [modalPresent, modalDismiss] = useIonModal(ModalBody, {
-    name,
-    surname,
-    title,
-    experience,
-    education,
+    person: peopleList[0],
     onDismiss: handleModalDismiss,
   });
 
@@ -93,7 +76,7 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
   );
 
   const handleOnSwipe = (swipeDirection: any) => {
-    setPictureIndex(Math.floor(Math.random() * 50));
+    isRecruiter && setPictureIndex(Math.floor(Math.random() * 50));
 
     if (swipeDirection === direction.RIGHT) {
       setLastSwipeDirection("your right");
@@ -125,12 +108,19 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
       }
     }
 
-    dispatch(removeOnePersonFromList({}));
+    //setCards((prev) => prev.slice(1));
+    if (isRecruiter) {
+      dispatch(removeOnePersonFromList({}));
+
+    } else {
+      dispatch(removeOneJobFromList({}));
+
+    }
   };
 
   return (
     <div className="explore-container">
-      {cards.length > 0 && (
+      {(
         <>
           <Swipeable onSwipe={handleOnSwipe}>
             {isRecruiter ? (
@@ -143,7 +133,7 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
               />
             ) : (
               <CardWithJob
-                info={cards[0]}
+                info={jobList[0]}
                 onClick={() => jobModalPresent({})}
               />
             )}

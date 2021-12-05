@@ -24,7 +24,7 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import React from "react";
 import { getPictures } from "./store/picturesReducer";
-import { getPeopleList } from "./store/cardContentReducer";
+import { getJobsList, getPeopleList } from "./store/cardContentReducer";
 import Profile from "./pages/Profile/Profile";
 import { getJobsForRecruiter, getMatches } from "./store/userReducer";
 import Messages from "./pages/Messages/Messages";
@@ -54,6 +54,7 @@ const App: React.FC = () => {
   React.useEffect(() => {
     userType === 2 && dispatch(getPeopleList({}));
     userType === 2 && dispatch(getJobsForRecruiter({ userId: userData.id }));
+    userType === 1 && dispatch(getJobsList({}));
 
     let interv: ReturnType<typeof setInterval>;
     if (loggedIn) {

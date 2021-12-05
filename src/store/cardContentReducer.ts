@@ -24,6 +24,17 @@ export const swipeCard = createAsyncThunk<any, any, any>(
       job_id: jobId,
       swipe_result: direction,
     });
+
+    return response.data;
+  }
+);
+
+export const getJobsList = createAsyncThunk<any, any, any>(
+  "cardContent/getJobList",
+  async () => {
+    let ENDPOINT = "jobs";
+
+    const response = await axios.get(MAIN_URL + ENDPOINT);
     return response.data;
   }
 );
@@ -39,6 +50,10 @@ export const cardContentSlice = createSlice({
     removeOnePersonFromList: (state, _) => {
       const newList = [...state.peopleList];
       state.peopleList = [...newList.slice(1)];
+    },
+    removeOneJobFromList: (state, _) => {
+      const newList = [...state.jobList];
+      state.jobList = [...newList.slice(1)];
     },
   },
   extraReducers: (builder) => {
@@ -59,9 +74,24 @@ export const cardContentSlice = createSlice({
       console.log("error");
       state.loading = false;
     });
+
+    builder.addCase(getJobsList.fulfilled, (state, action) => {
+      state.jobList = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(getJobsList.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(getJobsList.rejected, (state, action) => {
+      console.log("error");
+      state.loading = false;
+    });
   },
 });
 
-export const { deletePeopleList, removeOnePersonFromList } =
-  cardContentSlice.actions;
+export const {
+  deletePeopleList,
+  removeOnePersonFromList,
+  removeOneJobFromList,
+} = cardContentSlice.actions;
 export default cardContentSlice.reducer;
