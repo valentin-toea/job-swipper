@@ -9,21 +9,22 @@ import {
   IonCardSubtitle,
   IonCardTitle,
 } from "@ionic/react";
+import { info } from "console";
 
 interface Props {
-  info: number;
+  info: any;
   picture: string;
   onClick: () => void;
 }
 
-const Card: React.FC<Props> = (props: Props) => {
+const Card: React.FC<Props> = ({ info, picture, onClick }) => {
   return (
-    <div className="cardContainer" onClick={props.onClick}>
+    <div className="cardContainer" onClick={onClick}>
       <IonCard className="card">
-        <img src={props.picture} className="card-img" />
+        <img src={picture} className="card-img" />
         <IonCardHeader>
-          <IonCardSubtitle>Frontend Developer</IonCardSubtitle>
-          <IonCardTitle>Madison, WI</IonCardTitle>
+          <IonCardSubtitle>{info.title}</IonCardSubtitle>
+          <IonCardTitle>{info.name + ", " + info.surname}</IonCardTitle>
         </IonCardHeader>
         <IonCardContent>
           Skills in C# , C++

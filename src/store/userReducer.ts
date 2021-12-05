@@ -18,7 +18,7 @@ export const authenticateUser = createAsyncThunk<any, any, any>(
 export const userSlice = createSlice({
   name: "user",
   // 1- persoana, 2 - recruiter
-  initialState: { userData: {}, loggedIn: false, userType: 1 },
+  initialState: { userData: {}, loggedIn: false, userType: 0 },
   reducers: {
     updateUserType: (state, action) => {
       state.userType = action.payload;

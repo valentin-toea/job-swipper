@@ -1,5 +1,5 @@
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet } from "@ionic/react";
+import { IonApp, IonRouterOutlet, useIonLoading } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
@@ -24,18 +24,28 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import React from "react";
 import { getPictures } from "./store/picturesReducer";
+import { getPeopleList } from "./store/cardContentReducer";
 
 interface StoreState {
   user: { loggedIn: boolean };
 }
 
+interface StoreState2 {
+  user: { userType: number };
+}
+
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector((state: StoreState) => state.user.loggedIn);
+  const userType = useSelector((state: StoreState2) => state.user.userType);
 
   React.useEffect(() => {
     dispatch(getPictures({}));
   }, []);
+
+  React.useEffect(() => {
+    userType === 2 && dispatch(getPeopleList({}));
+  }, [loggedIn]);
 
   return (
     <IonApp>

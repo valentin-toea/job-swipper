@@ -2,12 +2,19 @@ import "./ExploreContainer.css";
 import React from "react";
 import { Swipeable, direction } from "react-deck-swiper";
 import Card from "../Card/Card";
-import { IonButton, IonIcon, useIonModal, useIonToast } from "@ionic/react";
+import {
+  IonButton,
+  IonIcon,
+  useIonLoading,
+  useIonModal,
+  useIonToast,
+} from "@ionic/react";
 import { star, close, heart } from "ionicons/icons";
 import ModalBody from "../RecruitCardModal/RecruitCardModal";
 import JobModalBody from "../JobCardModal/JobCardModal";
 import CardWithJob from "../CardWithJob/CardWithJob";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { removeOnePersonFromList } from "../../store/cardContentReducer";
 
 const name = "Ion";
 const surname = "Vasilache";
@@ -32,8 +39,12 @@ const requirements = {
 const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
   isRecruiter,
 }) => {
+  const dispatch = useDispatch();
   const pictures = useSelector(
     (state: { pictures: { list: [] } }) => state.pictures.list
+  );
+  const peopleList = useSelector(
+    (state: { cardContent: { peopleList: Array<Object> } }) => state.cardContent.peopleList
   );
 
   const [lastSwipeDirection, setLastSwipeDirection] = React.useState("");
@@ -68,34 +79,23 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
     onDismiss: handleModalDismiss,
   });
 
+  console.log(peopleList);
+
   const handleOnSwipe = (swipeDirection: any) => {
     setPictureIndex(Math.floor(Math.random() * 50));
 
     if (swipeDirection === direction.RIGHT) {
       setLastSwipeDirection("your right");
-      present({
-        buttons: [{ text: "UNDO", handler: () => dismiss() }],
-        color: "success",
-        duration: 3000,
-        message: "Accepted this job offer",
-        onDidDismiss: () => console.log("dismissed"),
-        onWillDismiss: () => console.log("will dismiss"),
-      });
+      present(swipeRight);
     }
 
     if (swipeDirection === direction.LEFT) {
       setLastSwipeDirection("your left");
-      present({
-        buttons: [{ text: "UNDO", handler: () => dismiss() }],
-        color: "danger",
-        message: "Refused this job offer",
-        duration: 3000,
-        onDidDismiss: () => console.log("dismissed"),
-        onWillDismiss: () => console.log("will dismiss"),
-      });
+      present(swipeLeft);
     }
 
-    setCards((prev) => prev.slice(1));
+    //setCards((prev) => prev.slice(1));
+    dispatch(removeOnePersonFromList({}));
   };
 
   return (
@@ -105,7 +105,7 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
           <Swipeable onSwipe={handleOnSwipe}>
             {isRecruiter ? (
               <Card
-                info={cards[0]}
+                info={peopleList[0]}
                 picture={pictures[pictureIndex]}
                 onClick={() => {
                   modalPresent({});
@@ -159,3 +159,21 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
 };
 
 export default ExploreContainer;
+
+const swipeRight = {
+  buttons: [{ text: "UNDO", handler: () => {} }],
+  color: "success",
+  duration: 3000,
+  message: "Accepted this job offer",
+  onDidDismiss: () => console.log("dismissed"),
+  onWillDismiss: () => console.log("will dismiss"),
+};
+
+const swipeLeft = {
+  buttons: [{ text: "UNDO", handler: () => {} }],
+  color: "danger",
+  message: "Refused this job offer",
+  duration: 3000,
+  onDidDismiss: () => console.log("dismissed"),
+  onWillDismiss: () => console.log("will dismiss"),
+};
