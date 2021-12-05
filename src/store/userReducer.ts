@@ -18,13 +18,21 @@ export const authenticateUser = createAsyncThunk<any, any, any>(
 export const userSlice = createSlice({
   name: "user",
   // 1- persoana, 2 - recruiter
-  initialState: { userData: {}, loggedIn: false, userType: 0 },
+  initialState: {
+    userData: {},
+    loggedIn: false,
+    userType: 0,
+    filterString: {},
+  },
   reducers: {
     updateUserType: (state, action) => {
       state.userType = action.payload;
     },
     deleteUser: (state, _) => {
       state.userData = {};
+    },
+    updateFilterString: (state, action) => {
+      state.filterString = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -45,5 +53,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { updateUserType, deleteUser } = userSlice.actions;
+export const { updateUserType, deleteUser, updateFilterString } =
+  userSlice.actions;
 export default userSlice.reducer;
