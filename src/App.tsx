@@ -24,14 +24,8 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import React from "react";
 import { getPictures } from "./store/picturesReducer";
-<<<<<<< HEAD
 import { getPeopleList } from "./store/cardContentReducer";
-=======
 import Profile from "./pages/Profile/Profile";
-
-
-
->>>>>>> 6b0564f7d14ab12b4341fa9959bad8efaa39be36
 
 interface StoreState {
   user: { loggedIn: boolean };
@@ -70,11 +64,11 @@ const App: React.FC = () => {
             path="/login"
             render={() => (!loggedIn ? <Login /> : <Redirect to="/home" />)}
           />
-          <Route exact 
-            path="/profile" 
-            render={() => (loggedIn ? <Profile /> : <Redirect to="/login"/> )}/>
-
-
+          <Route
+            exact
+            path="/profile"
+            render={() => (loggedIn ? <Profile /> : <Redirect to="/login" />)}
+          />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
