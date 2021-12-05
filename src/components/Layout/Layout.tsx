@@ -7,22 +7,12 @@ import {
   IonPage,
 } from "@ionic/react";
 import { personCircle, flame, chatbubble } from "ionicons/icons";
-import { Redirect, Route, Switch, BrowserRouter } from "react-router-dom";
 import "./Layout.css";
-
-const comp: React.FC = () => <div>salut</div>;
 
 const Layout: React.FC = ({ children }) => (
   <IonPage>
-    <BrowserRouter>
-    <Switch>
-      <Route path="/tabs/:tab(home)" component={comp} exact />
-      <Route path="/tabs/:tab(test)" component={comp} exact />
-      <Redirect from="/tabs" to="/tabs/home" />
-    </Switch>
-    </BrowserRouter>
     <IonTabBar slot="top">
-      <IonTabButton tab="profile" className="first-tab">
+      <IonTabButton tab="profile" className="first-tab" href={"/profile"}>
         <IonIcon icon={personCircle} />
       </IonTabButton>
 

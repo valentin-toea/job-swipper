@@ -1,0 +1,31 @@
+.avatar-wrapper{
+    margin-top: 50px
+}
+.avatar-wrapper, .header-wrapper{
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
+}
+.header-wrapper{
+    flex-direction: column;
+    align-items: center;
+}
+.card-content{
+    margin-top: 40px;
+}
+.avatar{
+    width: 80px;
+    height: 80px;
+}
+.skill-field{
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 20px;
+    font-size: large;
+    font-family: var(--ion-font-family, inherit);
+}
+.filter-field{
+    padding: 0px 20px;
+    font-size: large;
+    font-weight: bold;
+}
