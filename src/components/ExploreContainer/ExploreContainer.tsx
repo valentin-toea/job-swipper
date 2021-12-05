@@ -88,7 +88,7 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
     if (swipeDirection === direction.RIGHT) {
       setLastSwipeDirection("your right");
 
-      present(swipeRight(() => dismiss()));
+      present(swipeRight);
       if (isRecruiter) {
         dispatch(
           swipeCard({
@@ -103,7 +103,7 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
 
     if (swipeDirection === direction.LEFT) {
       setLastSwipeDirection("your left");
-      present(swipeLeft(() => dismiss()));
+      present(swipeLeft);
       if (isRecruiter) {
         dispatch(
           swipeCard({
@@ -196,18 +196,16 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
 
 export default ExploreContainer;
 
-const swipeRight = (magicFunc: () => void) => ({
-  buttons: [{ text: "UNDO", handler: () => {} }],
+const swipeRight = {
+  buttons: [{ text: "Check Matches", handler: () => {} }],
   color: "success",
   duration: 2000,
   message: "Requested a chat",
-  ionToastWillPresent: magicFunc,
-});
+};
 
-const swipeLeft = (magicFunc: () => void) => ({
-  buttons: [{ text: "UNDO", handler: () => {} }],
+const swipeLeft = {
+  buttons: [{ text: "Check Next", handler: () => {} }],
   color: "danger",
   message: "Ignored this offer",
   duration: 2000,
-  ionToastWillPresent: magicFunc,
-});
+};

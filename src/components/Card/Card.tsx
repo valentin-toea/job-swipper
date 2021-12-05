@@ -29,7 +29,9 @@ const Card: React.FC<Props> = ({ info, picture, onClick }) => {
             <IonCardTitle>{info.name + ", " + info.surname}</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            {info.skills}
+            {Object.entries(info.skills).map((ent) => (
+              <p>{ent[0] + " - " + ent[1]}</p>
+            ))}
             <br />
             <b>*Press to see more</b>
           </IonCardContent>

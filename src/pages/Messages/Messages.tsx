@@ -107,7 +107,7 @@ const Messages = () => {
     <Layout>
       <IonContent fullscreen>
         <IonList lines="full" style={{ marginTop: 30 }}>
-          {messages.length === 0 && <h2>You have no matches.</h2>}
+          {messages.length === 0 && <h2 style={{textAlign: 'center'}}>You have no matches.</h2>}
           {messages?.length !== 0 &&
             messages.map((msg, index) => (
               <IonItemSliding key={index}>
