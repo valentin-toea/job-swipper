@@ -190,7 +190,7 @@ const ProfileContainer: React.FC = () => {
                 multiple={true}
                 onIonChange={(e) => {
                   setSearchedSkills(e.detail.value);
-                  dispatch(updateFilterString(e.detail.value));
+                  dispatch(updateFilterString(e.detail.value.join(",")));
                 }}
               >
                 {skills.map((obj: string, index: number) => (
