@@ -16,7 +16,7 @@ const Layout: React.FC = ({ children }) => (
         <IonIcon icon={personCircle} />
       </IonTabButton>
 
-      <IonTabButton tab="finder" href={"/"}>
+      <IonTabButton tab="finder" href={"/home"}>
         <IonIcon icon={flame} />
       </IonTabButton>
 

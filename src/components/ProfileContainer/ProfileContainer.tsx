@@ -12,6 +12,8 @@ import {
   IonText,
 } from "@ionic/react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateFilterString } from "../../store/userReducer";
 import "./ProfileContainer.css";
 
 const ProfileContainer: React.FC = () => {
@@ -58,6 +60,7 @@ const ProfileContainer: React.FC = () => {
   const [type, setType] = useState(1);
   const [searchedSkills, setSearchedSkills] = useState([]);
   const [searchedJobs, setSearchedJobs] = useState([]);
+  const dispatch = useDispatch();
   const skillFields: string[][] = Object.entries(fetchedSkills);
   const jobsFields: string[][] = Object.entries(fetchedJobs);
 
@@ -95,7 +98,10 @@ const ProfileContainer: React.FC = () => {
                 cancelText="Dismiss"
                 placeholder="Pick at least one job.."
                 multiple={true}
-                onIonChange={(e) => setSearchedJobs(e.detail.value)}
+                onIonChange={(e) => {
+                    setSearchedJobs(e.detail.value);
+                    dispatch(updateFilterString(e.detail.value));
+                }}
               >
                 {jobs.map((obj: string) => (
                   <IonSelectOption value={obj}> {obj} </IonSelectOption>
@@ -130,7 +136,10 @@ const ProfileContainer: React.FC = () => {
                 cancelText="Dismiss"
                 placeholder="Pick at least one skill.."
                 multiple={true}
-                onIonChange={(e) => setSearchedSkills(e.detail.value)}
+                onIonChange={(e) => {
+                    setSearchedSkills(e.detail.value);
+                    dispatch(updateFilterString(e.detail.value));
+                }}
               >
                 {skills.map((obj: string) => (
                   <IonSelectOption value={obj}> {obj} </IonSelectOption>

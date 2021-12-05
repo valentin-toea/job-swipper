@@ -50,7 +50,7 @@ const App: React.FC = () => {
           </Route>
           <Route
             path="/home"
-            render={() => (!loggedIn ? <Home /> : <Redirect to="/login" />)}
+            render={() => (loggedIn ? <Home /> : <Redirect to="/login" />)}
           />
           <Route
             exact
