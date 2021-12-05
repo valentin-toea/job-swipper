@@ -16,49 +16,55 @@ import { checkmarkCircleOutline } from "ionicons/icons";
 import React, { useState } from "react";
 
 const JobModalBody: React.FC<{
-  company_name: string;
-  job_title: string;
-  description: string;
-  requirements: {};
+  job: {
+    company_name: string;
+    job_title: string;
+    description: string;
+    requirements: string;
+  };
   onDismiss: () => void;
-}> = ({ company_name, job_title, description, requirements, onDismiss }) => {
-  const reqFields: string[][] = Object.entries(requirements);
+}> = ({ job, onDismiss }) => {
+
   const [image, setImage] = useState("");
+  const [reqFLD, setReqFLD] = useState<any>();
 
   React.useEffect(() => {
-    switch (company_name) {
-      case "Deutsche Bank":
+    switch (job.company_name) {
+      case "deutschebank":
         setImage("https://i.imgur.com/k5Dhhzk.jpeg");
         break;
-      case "Google":
+      case "google":
         setImage("https://i.ibb.co/6y6c8Ph/Google-office.jpg");
         break;
-      case "Snapchat":
+      case "snapchat":
         setImage("https://i.ibb.co/n6LQTwd/snapchat.jpg");
         break;
-      case "Meta":
+      case "facebook":
         setImage("https://i.ibb.co/GFq4dRx/meta.jpg");
+        break;
     }
-  }, []);
+    setReqFLD(job?.requirements?.split(','));
+
+  }, [job]);
 
   return (
     <IonCard className="modal-card-wrapper">
       <img src={image} alt="" />
       <IonCardHeader>
-        <IonCardTitle>{job_title}</IonCardTitle>
-        <IonCardSubtitle>{company_name}</IonCardSubtitle>
+        <IonCardTitle>{job.job_title}</IonCardTitle>
+        <IonCardSubtitle>{job.company_name}</IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
-        <p>{description}</p>
+        <p>{job.description}</p>
       </IonCardContent>
-      {reqFields.length !== 0 && (
+      { (!!reqFLD&&reqFLD.length !== 0) && (
         <IonList className="modal-list">
           <IonListHeader> Requirements </IonListHeader>
-          {reqFields.map((obj: string[], index: number) => (
+          {reqFLD.map((obj: string, index: number) => (
             <IonItem key={index}>
               <IonIcon icon={checkmarkCircleOutline} slot="start" />
               <IonLabel className="ion-text-wrap">
-                {obj[0]} - {obj[1]}
+                {obj}
               </IonLabel>
             </IonItem>
           ))}

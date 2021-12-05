@@ -1,25 +1,39 @@
-import { IonContent } from "@ionic/react";
+import { IonContent, useIonLoading } from "@ionic/react";
+import React from "react";
 import ExploreContainer from "../../components/ExploreContainer/ExploreContainer";
 import Layout from "../../components/Layout/Layout";
 import "./Home.css";
 import { useSelector } from "react-redux";
 
-interface StoreState {
-  pictures: { list: [] };
-}
-
 const Home: React.FC = () => {
-  const pictures = useSelector((state: StoreState) => state.pictures.list);
   const userType = useSelector(
     (state: { user: { userType: number } }) => state.user.userType
   );
 
+  const loadingState = useSelector(
+    (state: { cardContent: { loading: boolean } }) => state.cardContent.loading
+  );
+
+  const [showLoading, dismissLoading] = useIonLoading();
+
+  React.useEffect(() => {
+    loadingState &&
+      showLoading({
+        message: "Loading...",
+      });
+    !loadingState && dismissLoading();
+  }, [loadingState]);
+
   return (
-    <Layout>
-      <IonContent fullscreen>
-        <ExploreContainer isRecruiter={userType === 2 ? true : false} />
-      </IonContent>
-    </Layout>
+    <>
+      {!loadingState && (
+        <Layout>
+          <IonContent fullscreen>
+            <ExploreContainer isRecruiter={userType === 2 ? true : false} />
+          </IonContent>
+        </Layout>
+      )}
+    </>
   );
 };
 

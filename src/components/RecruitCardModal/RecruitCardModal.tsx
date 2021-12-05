@@ -15,23 +15,24 @@ import { schoolOutline, businessOutline } from "ionicons/icons";
 import "./RecruitCardModal.css";
 
 const ModalBody: React.FC<{
-  name: string;
+  person:{  name: string;
   surname: string;
   title: string;
   experience: {};
   education: {};
+  }
   onDismiss: () => void;
-}> = ({ name, surname, title, experience, education, onDismiss }) => {
-  const expFields: string[][] = Object.entries(experience);
-  const eduFields: string[][] = Object.entries(education);
+}> = ({ person, onDismiss }) => {
+  const expFields: string[][] = Object.entries(person.experience);
+  const eduFields: string[][] = Object.entries(person.education);
 
   return (
     <IonCard className="modal-card-wrapper">
       <IonCardHeader>
         <IonCardTitle>
-          {name} {surname}
+          {person.name} {person.surname}
         </IonCardTitle>
-        <IonCardSubtitle>{title}</IonCardSubtitle>
+        <IonCardSubtitle>{person.title}</IonCardSubtitle>
       </IonCardHeader>
       {expFields.length !== 0 && (
         <IonList className="modal-list">

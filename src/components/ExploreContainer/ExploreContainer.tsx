@@ -1,25 +1,21 @@
 import "./ExploreContainer.css";
-import React from "react";
+import React, { useState } from "react";
 import { Swipeable, direction } from "react-deck-swiper";
 import Card from "../Card/Card";
-import { IonButton, IonIcon, useIonModal, useIonToast } from "@ionic/react";
+import {
+  IonButton,
+  IonIcon,
+  useIonLoading,
+  useIonModal,
+  useIonToast,
+} from "@ionic/react";
 import { star, close, heart } from "ionicons/icons";
 import ModalBody from "../RecruitCardModal/RecruitCardModal";
 import JobModalBody from "../JobCardModal/JobCardModal";
 import CardWithJob from "../CardWithJob/CardWithJob";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { removeOneJobFromList, removeOnePersonFromList } from "../../store/cardContentReducer";
 
-const name = "Ion";
-const surname = "Vasilache";
-const title = "Frontend Developer";
-const experience = {
-  UPB: "student",
-  "Google.com": "CEO for 3 years",
-};
-const education = {
-  CNTV: "smecher 2012-2019",
-  UPB: "mai putin smecher, 2020 - azi si inca 5 ani ma asteapta",
-};
 const company_name = "Meta";
 const job_title = "Frontend Developer";
 const description =
@@ -32,8 +28,17 @@ const requirements = {
 const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
   isRecruiter,
 }) => {
+  const dispatch = useDispatch();
   const pictures = useSelector(
     (state: { pictures: { list: [] } }) => state.pictures.list
+  );
+  const peopleList = useSelector(
+    (state: { cardContent: { peopleList: Array<Object> } }) =>
+      state.cardContent.peopleList
+  );
+  const jobList = useSelector(
+    (state: { cardContent: { jobList: Array<Object> } }) =>
+      state.cardContent.jobList
   );
 
   const [lastSwipeDirection, setLastSwipeDirection] = React.useState("");
@@ -52,60 +57,47 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
   };
 
   const [jobModalPresent, jobModalDismiss] = useIonModal(JobModalBody, {
-    company_name,
-    job_title,
-    description,
-    requirements,
+    job: jobList[0],
     onDismiss: handleJobModalDismiss,
   });
 
   const [modalPresent, modalDismiss] = useIonModal(ModalBody, {
-    name,
-    surname,
-    title,
-    experience,
-    education,
+    person: peopleList[0],
     onDismiss: handleModalDismiss,
   });
 
+
   const handleOnSwipe = (swipeDirection: any) => {
-    setPictureIndex(Math.floor(Math.random() * 50));
+    isRecruiter && setPictureIndex(Math.floor(Math.random() * 50));
 
     if (swipeDirection === direction.RIGHT) {
       setLastSwipeDirection("your right");
-      present({
-        buttons: [{ text: "UNDO", handler: () => dismiss() }],
-        color: "success",
-        duration: 3000,
-        message: "Accepted this job offer",
-        onDidDismiss: () => console.log("dismissed"),
-        onWillDismiss: () => console.log("will dismiss"),
-      });
+      present(swipeRight);
     }
 
     if (swipeDirection === direction.LEFT) {
       setLastSwipeDirection("your left");
-      present({
-        buttons: [{ text: "UNDO", handler: () => dismiss() }],
-        color: "danger",
-        message: "Refused this job offer",
-        duration: 3000,
-        onDidDismiss: () => console.log("dismissed"),
-        onWillDismiss: () => console.log("will dismiss"),
-      });
+      present(swipeLeft);
     }
 
-    setCards((prev) => prev.slice(1));
+    //setCards((prev) => prev.slice(1));
+    if (isRecruiter) {
+      dispatch(removeOnePersonFromList({}));
+
+    } else {
+      dispatch(removeOneJobFromList({}));
+
+    }
   };
 
   return (
     <div className="explore-container">
-      {cards.length > 0 && (
+      {(
         <>
           <Swipeable onSwipe={handleOnSwipe}>
             {isRecruiter ? (
               <Card
-                info={cards[0]}
+                info={peopleList[0]}
                 picture={pictures[pictureIndex]}
                 onClick={() => {
                   modalPresent({});
@@ -113,7 +105,7 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
               />
             ) : (
               <CardWithJob
-                info={cards[0]}
+                info={jobList[0]}
                 onClick={() => jobModalPresent({})}
               />
             )}
@@ -159,3 +151,21 @@ const ExploreContainer: React.FC<{ isRecruiter: boolean }> = ({
 };
 
 export default ExploreContainer;
+
+const swipeRight = {
+  buttons: [{ text: "UNDO", handler: () => {} }],
+  color: "success",
+  duration: 3000,
+  message: "Accepted this job offer",
+  onDidDismiss: () => console.log("dismissed"),
+  onWillDismiss: () => console.log("will dismiss"),
+};
+
+const swipeLeft = {
+  buttons: [{ text: "UNDO", handler: () => {} }],
+  color: "danger",
+  message: "Refused this job offer",
+  duration: 3000,
+  onDidDismiss: () => console.log("dismissed"),
+  onWillDismiss: () => console.log("will dismiss"),
+};

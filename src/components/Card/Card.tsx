@@ -8,29 +8,37 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonTitle,
 } from "@ionic/react";
+import { info } from "console";
 
 interface Props {
-  info: number;
+  info: any;
   picture: string;
   onClick: () => void;
 }
 
-const Card: React.FC<Props> = (props: Props) => {
+const Card: React.FC<Props> = ({ info, picture, onClick }) => {
   return (
-    <div className="cardContainer" onClick={props.onClick}>
-      <IonCard className="card">
-        <img src={props.picture} className="card-img" />
-        <IonCardHeader>
-          <IonCardSubtitle>Frontend Developer</IonCardSubtitle>
-          <IonCardTitle>Madison, WI</IonCardTitle>
-        </IonCardHeader>
-        <IonCardContent>
-          Skills in C# , C++
-          <br />
-          <b>*Press to see more</b>
-        </IonCardContent>
-      </IonCard>
+    <div className="cardContainer" onClick={onClick}>
+      {info ? (
+        <IonCard className="card">
+          <img src={picture} className="card-img" />
+          <IonCardHeader>
+            <IonCardSubtitle>{info.title}</IonCardSubtitle>
+            <IonCardTitle>{info.name + ", " + info.surname}</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            Skills in C# , C++
+            <br />
+            <b>*Press to see more</b>
+          </IonCardContent>
+        </IonCard>
+      ) : (
+        <IonCard className="end-card">
+          <IonTitle>That's all.</IonTitle>
+        </IonCard>
+      )}
     </div>
   );
 };
