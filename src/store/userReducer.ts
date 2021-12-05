@@ -63,6 +63,9 @@ export const userSlice = createSlice({
     setRecruiterJob: (state, action) => {
       state.recruiterJob = action.payload;
     },
+    resetNotificationNumber: (state, action) => {
+      state.notificationNumber = 0;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(authenticateUser.fulfilled, (state, action) => {
@@ -94,7 +97,12 @@ export const userSlice = createSlice({
     });
 
     builder.addCase(getMatches.fulfilled, (state, action) => {
-      console.log(action.payload);
+      if (action.payload.length !== state.matches.length) {
+        state.matches = action.payload;
+
+        const num = action.payload.length - state.matches.length;
+        state.notificationNumber = action.payload.length;
+      }
     });
   },
 });
@@ -104,5 +112,6 @@ export const {
   deleteUser,
   updateFilterString,
   setRecruiterJob,
+  resetNotificationNumber,
 } = userSlice.actions;
 export default userSlice.reducer;

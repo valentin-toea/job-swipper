@@ -57,9 +57,10 @@ const App: React.FC = () => {
 
     let interv: ReturnType<typeof setInterval>;
     if (loggedIn) {
+      dispatch(getMatches({ userId: userData.id }));
       interv = setInterval(() => {
         dispatch(getMatches({ userId: userData.id }));
-      }, 10000);
+      }, 5000);
     }
 
     return () => interv && clearInterval(interv);
