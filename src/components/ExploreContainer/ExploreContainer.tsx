@@ -4,7 +4,8 @@ import { Swipeable, direction } from "react-deck-swiper";
 import Card from "../Card/Card";
 import { IonButton, IonIcon, useIonModal, useIonToast } from "@ionic/react";
 import { star, close, heart } from "ionicons/icons";
-import ModalBody from "../CardModal/CardModal";
+import ModalBody from "../RecruitCardModal/RecruitCardModal";
+import JobModalBody from "../JobCardModal/JobCardModal";
 
 const ExploreContainer: React.FC = () => {
   const [lastSwipeDirection, setLastSwipeDirection] = React.useState("");
@@ -14,6 +15,9 @@ const ExploreContainer: React.FC = () => {
 
   const handleModalDismiss = () => {
     modalDismiss();
+  }
+  const handleJobModalDismiss = () => {
+    jobModalDismiss();
   }
   const name = "Ion";
   const surname = "Vasilache";
@@ -26,6 +30,20 @@ const ExploreContainer: React.FC = () => {
     'CNTV' : 'smecher 2012-2019',
     'UPB' : 'mai putin smecher, 2020 - azi si inca 5 ani ma asteapta'
   };
+  const company_name = "Meta";
+  const job_title = "Frontend Developer";
+  const description = "lorem lorem loremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremloremlorem";
+  const requirements = {
+    "Minimum years":" 3 years of experience",
+    "Known Technologies": "SQL, JAVA, REACT, GIT",
+  }
+  const [jobModalPresent, jobModalDismiss] = useIonModal(JobModalBody,{
+    company_name,
+    job_title,
+    description,
+    requirements,
+    onDismiss: handleJobModalDismiss,
+  })
   const [modalPresent, modalDismiss] = useIonModal(ModalBody,{
     name,
     surname,
@@ -69,7 +87,7 @@ const ExploreContainer: React.FC = () => {
         <>
           <Swipeable onSwipe={handleOnSwipe} >
             <Card info={cards[0]} onClick={() => {
-              modalPresent({})
+              jobModalPresent({})
             }}/>
 
           </Swipeable>
