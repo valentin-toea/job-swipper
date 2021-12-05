@@ -5,35 +5,42 @@ import { MAIN_URL } from "../utils/url";
 
 export const authenticateUser = createAsyncThunk<any, any, any>(
   "user/authenticateUser",
-  async ({ userType, formData }) => {
-    /*  let ENDPOINT = "get-student-data";
+  async ({ formData }) => {
+    let ENDPOINT = "login";
 
     const response = await axios.post(MAIN_URL + ENDPOINT, {
       ...formData,
     });
-    return response.data; */
-    return { ...formData, userType };
+    return { formData: formData, ...response.data };
   }
 );
 
 export const userSlice = createSlice({
   name: "user",
-  initialState: { userData: undefined, loggedIn: false, userType: 1 },
+  // 1- persoana, 2 - recruiter
+  initialState: { userData: {}, loggedIn: false, userType: 1 },
   reducers: {
     updateUserType: (state, action) => {
       state.userType = action.payload;
     },
     deleteUser: (state, _) => {
-      state.userData = undefined;
+      state.userData = {};
     },
   },
   extraReducers: (builder) => {
     builder.addCase(authenticateUser.fulfilled, (state, action) => {
-      if (action.payload !== "") {
-        state.userData = action.payload;
-        state.userType = action.payload.userType;
+      if (action.payload !== -1) {
+        state.userType = action.payload.type;
+        state.userData = {
+          id: action.payload["user_id"],
+          ...action.payload.formData,
+        };
         state.loggedIn = true;
       } else state.loggedIn = false;
+    });
+
+    builder.addCase(authenticateUser.rejected, (state, action) => {
+      console.log("error");
     });
   },
 });

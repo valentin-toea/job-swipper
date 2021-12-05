@@ -23,7 +23,7 @@ import "./Login.css";
 const Login = () => {
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState<string>();
+  const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [userType, setUserType] = useState<string | any>("1");
 
@@ -44,11 +44,11 @@ const Login = () => {
               <IonLabel>Login</IonLabel>
             </IonListHeader>
             <IonItem>
-              <IonLabel position="fixed">Email</IonLabel>
+              <IonLabel position="fixed">Username</IonLabel>
               <IonInput
-                value={email}
+                value={username}
                 placeholder="email@address.com"
-                onIonChange={(e) => setEmail(e.detail.value!)}
+                onIonChange={(e) => setUsername(e.detail.value!)}
               ></IonInput>
             </IonItem>
 
@@ -79,9 +79,7 @@ const Login = () => {
             color="primary"
             className="auth-button"
             onClick={() =>
-              dispatch(
-                authenticateUser({ userType, formData: { email, password } })
-              )
+              dispatch(authenticateUser({ formData: { username, password } }))
             }
           >
             Authenticate

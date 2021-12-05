@@ -1,13 +1,23 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../../components/ExploreContainer/ExploreContainer';
-import Layout from '../../components/Layout/Layout';
-import './Home.css';
+import { IonContent } from "@ionic/react";
+import ExploreContainer from "../../components/ExploreContainer/ExploreContainer";
+import Layout from "../../components/Layout/Layout";
+import "./Home.css";
+import { useSelector } from "react-redux";
+
+interface StoreState {
+  pictures: { list: [] };
+}
 
 const Home: React.FC = () => {
+  const pictures = useSelector((state: StoreState) => state.pictures.list);
+  const userType = useSelector(
+    (state: { user: { userType: number } }) => state.user.userType
+  );
+
   return (
     <Layout>
       <IonContent fullscreen>
-        <ExploreContainer />
+        <ExploreContainer isRecruiter={userType === 2 ? true : false} />
       </IonContent>
     </Layout>
   );
